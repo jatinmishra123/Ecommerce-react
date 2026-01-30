@@ -147,3 +147,75 @@
   justify-content: center;
   border-radius: 50%;
 }
+/* Add these new styles to your existing CSS */
+
+.menu-icon {
+  display: none; /* Hidden on desktop */
+  font-size: 24px;
+  cursor: pointer;
+  color: #1a1a1a;
+}
+
+/* ================= MOBILE RESPONSIVE ================= */
+
+@media (max-width: 992px) {
+  .menu-icon {
+    display: block; /* Show hamburger */
+    order: 1;
+  }
+
+  .logo {
+    order: 2;
+  }
+
+  .right {
+    order: 3;
+  }
+
+  /* Transform Nav into a Sidebar Drawer */
+  .nav {
+    position: fixed;
+    left: -100%; /* Hidden by default */
+    top: 80px;
+    flex-direction: column;
+    background-color: #fff;
+    width: 80%;
+    height: calc(100vh - 80px);
+    transition: 0.3s ease-in-out;
+    box-shadow: 10px 0 15px rgba(0,0,0,0.1);
+    padding: 40px;
+    gap: 40px;
+    z-index: 999;
+  }
+
+  .nav.nav-active {
+    left: 0; /* Slide in when active */
+  }
+
+  .nav-link {
+    font-size: 18px;
+    width: 100%;
+  }
+
+  .mobile-hide {
+    display: none; /* Hide search bar on tablets/phones to save space */
+  }
+}
+
+@media (max-width: 480px) {
+  .header-container {
+    padding: 0 15px;
+  }
+
+  .logo {
+    font-size: 16px;
+  }
+
+  .icon-label {
+    display: none; /* Just show icons on small phones */
+  }
+  
+  .icon-group {
+    gap: 15px;
+  }
+}
