@@ -1,0 +1,218 @@
+:root {
+  --font-main: 'Inter', sans-serif;
+  --font-heading: 'Playfair Display', serif;
+  --bg-color: #ffffff;
+  --text-main: #1a1a1a;
+  --accent: #611580;
+  --light-gray: #f5f5f5;
+}
+
+.home-container {
+  font-family: var(--font-main);
+  color: var(--text-main);
+  background-color: var(--bg-color);
+}
+
+/* Hero Section - Side by Side Layout */
+.hero-section {
+  display: flex;
+  align-items: center;
+  height: 85vh;
+  padding: 0 5%;
+  background-color: var(--light-gray);
+  overflow: hidden;
+}
+
+.hero-text {
+  flex: 1;
+  padding-right: 50px;
+}
+
+.pre-title {
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.hero-text h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(40px, 6vw, 80px);
+  line-height: 1.1;
+  margin: 20px 0;
+}
+
+.primary-btn {
+  background: var(--text-main);
+  color: white;
+  padding: 16px 40px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: 0.3s;
+}
+
+.primary-btn:hover {
+  background: var(--accent);
+}
+
+.hero-image-wrapper {
+  flex: 1;
+  height: 100%;
+}
+
+.hero-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Category Grid - Modern Tiles */
+.category-grid-section {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  padding: 80px 5%;
+}
+
+.cat-card {
+  position: relative;
+  height: 500px;
+  overflow: hidden;
+}
+
+.cat-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+.cat-info {
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+  color: white;
+}
+
+.cat-info h3 {
+  font-size: 28px;
+  margin-bottom: 10px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.text-link {
+  background: transparent;
+  border: none;
+  color: white;
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.cat-card:hover img {
+  transform: scale(1.05);
+}
+
+/* Arrivals Section */
+.arrivals-section {
+  padding: 80px 5%;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.section-title h2 {
+  font-family: var(--font-heading);
+  font-size: 36px;
+}
+
+.product-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+}
+
+.product-img-box {
+  position: relative;
+  height: 380px;
+  background: var(--light-gray);
+  overflow: hidden;
+}
+
+.product-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.quick-shop {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 15px;
+  background: rgba(255,255,255,0.9);
+  border: none;
+  transform: translateY(100%);
+  transition: 0.3s;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.product-item:hover .quick-shop {
+  transform: translateY(0);
+}
+
+.product-details {
+  padding-top: 15px;
+}
+
+.product-price {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* Newsletter Section */
+.newsletter-section {
+  padding: 100px 5%;
+  background: var(--light-gray);
+  text-align: center;
+}
+
+.newsletter-content h2 {
+  font-family: var(--font-heading);
+  font-size: 40px;
+}
+
+.newsletter-form {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.newsletter-form input {
+  padding: 15px;
+  width: 300px;
+  border: 1px solid #ddd;
+}
+
+.newsletter-form button {
+  padding: 15px 40px;
+  background: var(--text-main);
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero-section { flex-direction: column; text-align: center; padding: 40px 5%; }
+  .hero-text { padding: 0; margin-bottom: 30px; }
+  .category-grid-section { grid-template-columns: 1fr; }
+  .newsletter-form { flex-direction: column; align-items: center; }
+}

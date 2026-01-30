@@ -1,0 +1,149 @@
+/* Header Container */
+.header {
+  width: 100%;
+  height: 80px;
+  background: #a5b46f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.05);
+  font-family: 'Inter', sans-serif;
+}
+
+.header-container {
+  width: 100%;
+  max-width: 1400px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+}
+
+/* Logo */
+.logo {
+  font-size: 22px;
+  letter-spacing: 2px;
+  font-weight: 800;
+  color: #1a1a1a;
+  cursor: pointer;
+}
+
+.logo span {
+  color: #611580; /* Your primary purple color */
+}
+
+/* Navigation */
+.nav {
+  display: flex;
+  gap: 30px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #444;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -5px;
+  left: 0;
+  background-color: #1a1a1a;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.sale {
+  color: #ff3f6c;
+}
+
+/* Search Box */
+.search-box {
+  display: flex;
+  align-items: center;
+  background: #f5f5f6;
+  padding: 8px 15px;
+  border-radius: 4px;
+  width: 300px;
+  transition: all 0.3s ease;
+}
+
+.search-box:focus-within {
+  background: #fff;
+  box-shadow: 0 0 0 1px #ddd;
+}
+
+.search-icon {
+  color: #666;
+  font-size: 14px;
+}
+
+.search-box input {
+  border: none;
+  background: transparent;
+  outline: none;
+  margin-left: 10px;
+  width: 100%;
+  font-size: 14px;
+}
+
+/* Right Icons */
+.right {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.icon-group {
+  display: flex;
+  gap: 20px;
+}
+
+.icon-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.icon {
+  font-size: 20px;
+  color: #282c3f;
+}
+
+.icon-label {
+  font-size: 10px;
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+/* Cart Badge */
+.count {
+  position: absolute;
+  top: -5px;
+  right: 2px;
+  background: #ff3f6c;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  height: 16px;
+  width: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
