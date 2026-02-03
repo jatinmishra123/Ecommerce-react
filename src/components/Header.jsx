@@ -11,27 +11,26 @@ const Header = () => {
   return (
     <header className="header">
       <div className="header-container">
-        {/* Hamburger Menu Icon (Mobile Only) */}
+        {/* Hamburger Menu Icon */}
         <div className="menu-icon" onClick={toggleMenu}>
           {isMenuOpen ? <FaTimes /> : <FaBars />}
         </div>
 
-        {/* Logo Section */}
+        {/* Logo */}
         <div className="logo">
           CLOTH<span>STORE</span>
         </div>
 
-        {/* Navigation Links - Added 'active' class based on state */}
+        {/* Nav */}
         <nav className={`nav ${isMenuOpen ? "nav-active" : ""}`}>
           <Link to="/" className="nav-link" onClick={() => setIsMenuOpen(false)}>Home</Link>
           <Link to="/about" className="nav-link" onClick={() => setIsMenuOpen(false)}>About Us</Link>
           <NavLink to="/men" className="nav-link" onClick={() => setIsMenuOpen(false)}>Men</NavLink>
           <NavLink to="/women" className="nav-link" onClick={() => setIsMenuOpen(false)}>Women</NavLink>
           <Link to="/kids" className="nav-link" onClick={() => setIsMenuOpen(false)}>Kids</Link>
-          <Link to="/sale" className="nav-link sale" onClick={() => setIsMenuOpen(false)}>Sale</Link>
         </nav>
 
-        {/* Action Icons & Search */}
+        {/* Right Section */}
         <div className="right">
           <div className="search-box mobile-hide">
             <FaSearch className="search-icon" />
@@ -39,11 +38,13 @@ const Header = () => {
           </div>
 
           <div className="icon-group">
-            <div className="icon-wrapper">
+            {/* Profile */}
+            <Link to="/profile" className="icon-wrapper">
               <FaUser className="icon" />
               <span className="icon-label">Profile</span>
-            </div>
-            
+            </Link>
+
+            {/* Cart */}
             <div className="icon-wrapper cart">
               <FaShoppingCart className="icon" />
               <span className="count">2</span>

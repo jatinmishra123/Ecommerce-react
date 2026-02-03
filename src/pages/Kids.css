@@ -1,0 +1,49 @@
+.kids-theme {
+  --accent: #ff6f61;
+  background-color: #fff8f0;
+}
+
+/* Hero for Kids */
+.kids-theme .collection-hero {
+  height: 300px;
+  background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+              url('https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&w=1200&q=80');
+  background-size: cover;
+  background-position: center;
+  color: white;
+}
+
+/* Headings playful */
+.kids-theme .collection-hero h1 {
+  font-size: 3rem;
+  letter-spacing: 2px;
+  text-transform: none;
+  font-family: "Comic Sans MS", "Poppins", sans-serif;
+}
+
+/* Buttons */
+.kids-theme .add-btn {
+  background: linear-gradient(45deg, #ff6f61, #ffcc00);
+  font-weight: bold;
+  border-radius: 0;
+}
+
+/* Product Card */
+.kids-theme .product-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+}
+
+/* Filter text */
+.kids-theme .options span {
+  color: #ff6f61;
+  font-weight: 600;
+}
+
+/* Price color */
+.kids-theme .price {
+  color: #ff6f61;
+  font-size: 18px;
+}
