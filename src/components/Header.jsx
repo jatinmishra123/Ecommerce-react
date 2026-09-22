@@ -1,12 +1,28 @@
-import React, { useState } from "react";
-import { FaShoppingCart, FaUser, FaSearch, FaBars, FaTimes } from "react-icons/fa";
+import React, { useEffect, useState } from "react";
+import { FaShoppingCart, FaUser, FaSearch, FaBars, FaTimes, FaTshirt } from "react-icons/fa";
 import "./Header.css";
 import { Link, NavLink } from "react-router-dom";
+
+const navItems = [
+  { to: "/", label: "Home", end: true },
+  { to: "/about", label: "About Us" },
+  { to: "/men", label: "Men" },
+  { to: "/women", label: "Women" },
+  { to: "/kids", label: "Kids" },
+];
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const toggleMenu = () => setIsMenuOpen((prev) => !prev);
+  const closeMenu = () => setIsMenuOpen(false);
+
+  useEffect(() => {
+    document.body.style.overflow = isMenuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMenuOpen]);
 
   return (
     <header className="header">
@@ -17,18 +33,28 @@ const Header = () => {
         </div>
 
         {/* Logo */}
-        <div className="logo">
-          CLOTH<span>STORE</span>
-        </div>
+        <Link to="/" className="logo" onClick={closeMenu}>
+          <span className="logo-mark"><FaTshirt /></span>
+          <span className="logo-text">CLOTH<span className="accent">STORE</span></span>
+        </Link>
 
         {/* Nav */}
         <nav className={`nav ${isMenuOpen ? "nav-active" : ""}`}>
-          <Link to="/" className="nav-link" onClick={() => setIsMenuOpen(false)}>Home</Link>
-          <Link to="/about" className="nav-link" onClick={() => setIsMenuOpen(false)}>About Us</Link>
-          <NavLink to="/men" className="nav-link" onClick={() => setIsMenuOpen(false)}>Men</NavLink>
-          <NavLink to="/women" className="nav-link" onClick={() => setIsMenuOpen(false)}>Women</NavLink>
-          <Link to="/kids" className="nav-link" onClick={() => setIsMenuOpen(false)}>Kids</Link>
+          {navItems.map(({ to, label, end }) => (
+            <NavLink
+              key={to}
+              to={to}
+              end={end}
+              className={({ isActive }) => `nav-link${isActive ? " active" : ""}`}
+              onClick={closeMenu}
+            >
+              {label}
+            </NavLink>
+          ))}
         </nav>
+
+        {/* Backdrop for mobile menu */}
+        {isMenuOpen && <div className="nav-overlay" onClick={closeMenu} />}
 
         {/* Right Section */}
         <div className="right">
@@ -45,11 +71,11 @@ const Header = () => {
             </Link>
 
             {/* Cart */}
-            <div className="icon-wrapper cart">
+            <Link to="/cart" className="icon-wrapper cart">
               <FaShoppingCart className="icon" />
               <span className="count">2</span>
               <span className="icon-label">Bag</span>
-            </div>
+            </Link>
           </div>
         </div>
       </div>

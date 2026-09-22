@@ -1,5 +1,24 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./About.css";
+
+const team = [
+  {
+    name: "Arjun Sharma",
+    role: "Founder & CEO",
+    photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80",
+  },
+  {
+    name: "Priya Das",
+    role: "Creative Director",
+    photo: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=300&q=80",
+  },
+  {
+    name: "Vikram Singh",
+    role: "Head of Logistics",
+    photo: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80",
+  },
+];
 
 const About = () => {
   return (
@@ -9,6 +28,7 @@ const About = () => {
         <div className="hero-overlay">
           <h1>Redefining Modern Fashion</h1>
           <p>Where quality meets affordability. Established 2024.</p>
+          <Link to="/" className="hero-btn">Explore Collection</Link>
         </div>
       </section>
 
@@ -44,25 +64,17 @@ const About = () => {
         </div>
       </section>
 
-      {/* Meet the Team (New) */}
+      {/* Meet the Team */}
       <section className="about-team">
         <h2>Meet Our Creators</h2>
         <div className="team-grid">
-          <div className="team-member">
-            <div className="member-photo"></div>
-            <h4>Arjun Sharma</h4>
-            <span>Founder & CEO</span>
-          </div>
-          <div className="team-member">
-            <div className="member-photo"></div>
-            <h4>Priya Das</h4>
-            <span>Creative Director</span>
-          </div>
-          <div className="team-member">
-            <div className="member-photo"></div>
-            <h4>Vikram Singh</h4>
-            <span>Head of Logistics</span>
-          </div>
+          {team.map((member) => (
+            <div key={member.name} className="team-member">
+              <img className="member-photo" src={member.photo} alt={member.name} />
+              <h4>{member.name}</h4>
+              <span>{member.role}</span>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -94,8 +106,8 @@ const About = () => {
           <h2>Ready to upgrade your style?</h2>
           <p>Join our fashion community and get 10% off your first order.</p>
           <div className="cta-btns">
-            <button className="shop-btn">Shop Now</button>
-            <button className="contact-btn">Contact Us</button>
+            <Link to="/" className="shop-btn">Shop Now</Link>
+            <a href="mailto:support@clothstore.com" className="contact-btn">Contact Us</a>
           </div>
         </div>
       </section>
