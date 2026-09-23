@@ -5,16 +5,30 @@
 
 /* Hero for Kids */
 .kids-theme .collection-hero {
+  position: relative;
   height: 300px;
   background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
+              radial-gradient(circle at 10% 20%, rgba(255,255,255,0.15) 3px, transparent 3px),
+              radial-gradient(circle at 30% 70%, rgba(255,255,255,0.15) 4px, transparent 4px),
+              radial-gradient(circle at 60% 30%, rgba(255,255,255,0.15) 3px, transparent 3px),
+              radial-gradient(circle at 85% 65%, rgba(255,255,255,0.15) 5px, transparent 5px),
               url('https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&w=1200&q=80');
-  background-size: cover;
+  background-size: cover, 120px 120px, 160px 160px, 140px 140px, 180px 180px, cover;
   background-position: center;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
   text-align: center;
+  overflow: hidden;
+}
+
+.hero-wave {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 40px;
 }
 
 .kids-theme .breadcrumb {
@@ -168,6 +182,9 @@
 }
 
 .kids-theme .product-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
   background: white;
   border-radius: 12px;
   overflow: hidden;
@@ -176,12 +193,19 @@
 }
 
 .kids-theme .product-card:hover {
-  transform: translateY(-6px);
+  transform: translateY(-6px) rotate(-1deg);
+  box-shadow: 0 18px 30px rgba(0,0,0,0.14);
 }
 
 .kids-theme .image-wrapper { position: relative; overflow: hidden; height: 300px; background: #fff0e6; }
 .kids-theme .image-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
-.kids-theme .product-card:hover img { transform: scale(1.08); }
+.kids-theme .product-card:hover img { transform: scale(1.08) rotate(1deg); }
+
+/* Pastel accents per card */
+.kids-theme .pastel-0 .image-wrapper { background: #ffe4d6; }
+.kids-theme .pastel-1 .image-wrapper { background: #e0f4ea; }
+.kids-theme .pastel-2 .image-wrapper { background: #e6ecff; }
+.kids-theme .pastel-3 .image-wrapper { background: #fff3c4; }
 
 .kids-theme .badge {
   position: absolute;

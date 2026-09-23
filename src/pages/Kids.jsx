@@ -1,5 +1,8 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { FaStar, FaStarHalfAlt, FaRegStar, FaFilter, FaTimes } from "react-icons/fa";
+import { products } from "../data/products";
+import { useCart } from "../context/useCart";
 import "./Kids.css";
 
 const renderStars = (rating) => {
@@ -12,28 +15,29 @@ const renderStars = (rating) => {
   return stars;
 };
 
-const kidsProducts = [
-  { id: 1, name: "Cartoon T-Shirt", price: 25, rating: 4.5, badge: "NEW", img: "https://images.unsplash.com/photo-1519457851262-4e653eee931e?auto=format&fit=crop&w=500&q=80" },
-  { id: 2, name: "Denim Shorts", price: 30, rating: 4, img: "https://images.unsplash.com/photo-1522771930-78848d9293e8?auto=format&fit=crop&w=500&q=80" },
-  { id: 3, name: "Kids Hoodie", price: 40, oldPrice: 55, rating: 5, badge: "SALE", img: "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?auto=format&fit=crop&w=500&q=80" },
-  { id: 4, name: "Colorful Sneakers", price: 55, rating: 4.5, img: "https://images.unsplash.com/photo-1514989940723-e8e51635b782?auto=format&fit=crop&w=500&q=80" },
-  { id: 5, name: "Dinosaur Print Pajama Set", price: 28, rating: 4, badge: "NEW", img: "https://images.unsplash.com/photo-1522771753035-54ae3ff30fef?auto=format&fit=crop&w=500&q=80" },
-  { id: 6, name: "Rainbow Tutu Dress", price: 35, rating: 5, badge: "NEW", img: "https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?auto=format&fit=crop&w=500&q=80" },
-  { id: 7, name: "Superhero Backpack", price: 32, oldPrice: 42, rating: 4.5, badge: "SALE", img: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=500&q=80" },
-  { id: 8, name: "Velcro Strap Sandals", price: 22, rating: 3.5, img: "https://images.unsplash.com/photo-1560243563-062bfc001d68?auto=format&fit=crop&w=500&q=80" },
-];
+const kidsProducts = products.filter((p) => p.category === "kids");
 
 const Kids = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const { addToCart } = useCart();
+
+  const handleQuickAdd = (e, product) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addToCart(product, 1, product.sizes?.[0]);
+  };
 
   return (
     <div className="collection-page kids-theme">
       <header className="collection-hero">
         <div className="hero-content">
           <span className="breadcrumb">Home / Kids</span>
-          <h1>Kids Collection</h1>
-          <p>Fun, colorful & comfortable styles for kids.</p>
+          <h1>🎈 Kids Collection</h1>
+          <p>Fun, colorful & comfortable styles for little adventurers.</p>
         </div>
+        <svg className="hero-wave" viewBox="0 0 1440 60" preserveAspectRatio="none">
+          <path d="M0,32 C240,60 480,0 720,20 C960,40 1200,60 1440,24 L1440,60 L0,60 Z" fill="#fff8f0" />
+        </svg>
       </header>
 
       <div className="collection-toolbar">
@@ -62,7 +66,7 @@ const Kids = () => {
           </div>
 
           <div className="filter-group">
-            <label>Category</label>
+            <label>🧸 Category</label>
             <div className="options">
               {["T-Shirts", "Hoodies", "Shoes", "Dresses", "Accessories"].map((c) => (
                 <label key={c} className="checkbox-option">
@@ -73,7 +77,7 @@ const Kids = () => {
           </div>
 
           <div className="filter-group">
-            <label>Price</label>
+            <label>💰 Price</label>
             <div className="options">
               {["Under $30", "$30 - $50", "$50 & Above"].map((p) => (
                 <label key={p} className="checkbox-option">
@@ -84,7 +88,7 @@ const Kids = () => {
           </div>
 
           <div className="filter-group">
-            <label>Age Group</label>
+            <label>👶 Age Group</label>
             <div className="size-options">
               {["2-4Y", "5-7Y", "8-10Y", "11-13Y"].map((a) => (
                 <button key={a} type="button" className="size-btn">{a}</button>
@@ -100,16 +104,16 @@ const Kids = () => {
         {isFilterOpen && <div className="filter-overlay" onClick={() => setIsFilterOpen(false)} />}
 
         <main className="product-grid">
-          {kidsProducts.map((product) => (
-            <div key={product.id} className="product-card">
+          {kidsProducts.map((product, index) => (
+            <Link key={product.id} to={`/product/${product.id}`} className={`product-card pastel-${index % 4}`}>
               <div className="image-wrapper">
                 {product.badge && (
                   <span className={`badge ${product.badge === "SALE" ? "badge-sale" : "badge-new"}`}>
-                    {product.badge}
+                    {product.badge === "NEW" ? "✨ NEW" : "🔥 SALE"}
                   </span>
                 )}
                 <img src={product.img} alt={product.name} />
-                <button className="add-btn">Quick Add</button>
+                <button className="add-btn" onClick={(e) => handleQuickAdd(e, product)}>+ Quick Add</button>
               </div>
               <div className="info">
                 <h4>{product.name}</h4>
@@ -119,7 +123,7 @@ const Kids = () => {
                   {product.oldPrice && <span className="old-price">${product.oldPrice}</span>}
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </main>
       </div>

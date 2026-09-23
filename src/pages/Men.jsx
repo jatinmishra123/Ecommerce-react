@@ -1,5 +1,8 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { FaStar, FaStarHalfAlt, FaRegStar, FaFilter, FaTimes } from "react-icons/fa";
+import { products } from "../data/products";
+import { useCart } from "../context/useCart";
 import "./Men.css";
 
 const renderStars = (rating) => {
@@ -12,19 +15,17 @@ const renderStars = (rating) => {
   return stars;
 };
 
-const menProducts = [
-  { id: 1, name: "Urban Bomber Jacket", price: 129, rating: 4.5, badge: "NEW", img: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=500&q=80" },
-  { id: 2, name: "Slim Fit Oxford Shirt", price: 65, rating: 4, img: "https://images.unsplash.com/photo-1602810318383-e386cc2a7a3c?auto=format&fit=crop&w=500&q=80" },
-  { id: 3, name: "Selvedge Denim Jeans", price: 89, oldPrice: 120, rating: 4.5, badge: "SALE", img: "https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=500&q=80" },
-  { id: 4, name: "Classic Leather Loafers", price: 145, rating: 5, img: "https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?auto=format&fit=crop&w=500&q=80" },
-  { id: 5, name: "Merino Wool Sweater", price: 95, rating: 4, badge: "NEW", img: "https://images.unsplash.com/photo-1516826957135-700dedea698c?auto=format&fit=crop&w=500&q=80" },
-  { id: 6, name: "Tailored Chino Pants", price: 75, rating: 3.5, img: "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?auto=format&fit=crop&w=500&q=80" },
-  { id: 7, name: "Canvas Low-Top Sneakers", price: 60, rating: 4.5, img: "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=500&q=80" },
-  { id: 8, name: "Full-Grain Leather Belt", price: 40, oldPrice: 55, rating: 4, badge: "SALE", img: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=500&q=80" },
-];
+const menProducts = products.filter((p) => p.category === "men");
 
 const Men = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const { addToCart } = useCart();
+
+  const handleQuickAdd = (e, product) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addToCart(product, 1, product.sizes?.[0]);
+  };
 
   return (
     <div className="collection-page men-theme">
@@ -101,7 +102,7 @@ const Men = () => {
 
         <main className="product-grid">
           {menProducts.map((product) => (
-            <div key={product.id} className="product-card">
+            <Link key={product.id} to={`/product/${product.id}`} className="product-card">
               <div className="image-wrapper">
                 {product.badge && (
                   <span className={`badge ${product.badge === "SALE" ? "badge-sale" : "badge-new"}`}>
@@ -109,7 +110,7 @@ const Men = () => {
                   </span>
                 )}
                 <img src={product.img} alt={product.name} />
-                <button className="add-btn">Quick Add</button>
+                <button className="add-btn" onClick={(e) => handleQuickAdd(e, product)}>Quick Add</button>
               </div>
               <div className="info">
                 <h4>{product.name}</h4>
@@ -119,7 +120,7 @@ const Men = () => {
                   {product.oldPrice && <span className="old-price">${product.oldPrice}</span>}
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </main>
       </div>

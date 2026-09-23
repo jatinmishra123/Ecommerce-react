@@ -92,6 +92,7 @@
   cursor: pointer;
   margin-top: 20px;
   transition: 0.3s;
+  text-decoration: none;
 }
 
 .primary-btn:hover {
@@ -199,17 +200,34 @@
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
   padding: 50px 5%;
-  border-bottom: 1px solid var(--border-color);
 }
 
 .feature-item {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 16px;
+  padding: 22px;
+  background: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  transition: 0.25s;
+}
+
+.feature-item:hover {
+  border-color: var(--accent);
+  box-shadow: 0 12px 30px rgba(97, 21, 128, 0.08);
+  transform: translateY(-3px);
 }
 
 .feature-icon {
-  font-size: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #f2ecf6;
+  font-size: 20px;
   color: var(--accent);
   flex-shrink: 0;
 }
@@ -236,6 +254,17 @@
   position: relative;
   height: 500px;
   overflow: hidden;
+  border-radius: 14px;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.cat-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0) 45%);
 }
 
 .cat-card img {
@@ -247,6 +276,7 @@
 
 .cat-info {
   position: absolute;
+  z-index: 1;
   bottom: 30px;
   left: 30px;
   color: white;
@@ -265,6 +295,7 @@
   text-decoration: underline;
   cursor: pointer;
   font-weight: 600;
+  display: inline-block;
 }
 
 .cat-card:hover img {
@@ -282,6 +313,7 @@
 .flash-sale-card {
   position: relative;
   height: 320px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   padding: 0 50px;
@@ -355,17 +387,39 @@
   margin-top: 8px;
 }
 
+.section-title::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 3px;
+  background: var(--accent);
+  margin: 18px auto 0;
+  border-radius: 3px;
+}
+
 .product-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 30px;
 }
 
+.product-item {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
 .product-img-box {
   position: relative;
   height: 380px;
   background: var(--light-gray);
+  border-radius: 10px;
   overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+.product-item:hover .product-img-box {
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
 }
 
 .product-img-box img {
@@ -457,7 +511,14 @@
   background: #fff;
   padding: 35px;
   position: relative;
-  box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+  border-radius: 12px;
+  border-top: 3px solid var(--accent);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+  transition: transform 0.25s ease;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-6px);
 }
 
 .quote-icon {
@@ -513,7 +574,7 @@
 /* Newsletter Section */
 .newsletter-section {
   padding: 100px 5%;
-  background: var(--text-main);
+  background: radial-gradient(circle at 50% 0%, #2a1332 0%, var(--text-main) 55%);
   color: #fff;
   text-align: center;
 }
@@ -525,6 +586,7 @@
 
 .newsletter-content p {
   color: #ccc;
+  margin-top: 8px;
 }
 
 .newsletter-form {
@@ -535,9 +597,21 @@
 }
 
 .newsletter-form input {
-  padding: 15px;
+  padding: 15px 20px;
   width: 300px;
-  border: 1px solid #ddd;
+  border: 1px solid #444;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+
+.newsletter-form input::placeholder {
+  color: #999;
+}
+
+.newsletter-form input:focus {
+  outline: none;
+  border-color: var(--accent);
 }
 
 .newsletter-form button {
@@ -545,12 +619,15 @@
   background: var(--accent);
   color: white;
   border: none;
+  border-radius: 30px;
   cursor: pointer;
+  font-weight: 600;
   transition: 0.3s;
 }
 
 .newsletter-form button:hover {
   background: #7a1ba3;
+  transform: translateY(-2px);
 }
 
 /* Responsive */

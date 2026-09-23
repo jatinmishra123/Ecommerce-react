@@ -8,6 +8,7 @@ import Kids from "./pages/Kids.jsx";
 import { Routes, Route } from "react-router-dom";
 import Profile from "./pages/Profile";
 import Cart from "./pages/Cart.jsx";
+import ProductDetail from "./pages/ProductDetail.jsx";
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
           <Route path="/kids" element={<Kids />} />
 <Route path="/profile" element={<Profile />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/product/:id" element={<ProductDetail />} />
 
           {/* 404 Page */}
           <Route

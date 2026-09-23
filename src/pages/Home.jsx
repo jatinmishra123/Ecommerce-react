@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   FaTruck,
   FaUndo,
@@ -10,6 +11,8 @@ import {
   FaQuoteLeft,
   FaFire,
 } from "react-icons/fa";
+import { products } from "../data/products";
+import { useCart } from "../context/useCart";
 import "./Home.css";
 
 const renderStars = (rating) => {
@@ -23,19 +26,16 @@ const renderStars = (rating) => {
 };
 
 const Home = () => {
-  const arrivals = [
-    { id: 1, name: "Tailored Wool Coat", price: 180, rating: 4.5, badge: "NEW", img: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?auto=format&fit=crop&w=500&q=80" },
-    { id: 2, name: "Silk Evening Dress", price: 240, rating: 5, badge: "NEW", img: "https://images.unsplash.com/photo-1520975954732-35dd22299614?auto=format&fit=crop&w=500&q=80" },
-    { id: 3, name: "Classic Leather Boot", price: 150, rating: 4, badge: "NEW", img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=500&q=80" },
-    { id: 4, name: "Minimalist Watch", price: 310, rating: 4.5, badge: "NEW", img: "https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=500&q=80" },
-  ];
+  const { addToCart } = useCart();
 
-  const trending = [
-    { id: 1, name: "Urban Bomber Jacket", price: 129, oldPrice: 179, rating: 4.5, discount: 28, img: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=500&q=80" },
-    { id: 2, name: "Cashmere Turtleneck", price: 195, oldPrice: 260, rating: 5, discount: 25, img: "https://images.unsplash.com/photo-1583845187103-6256f16f562a?auto=format&fit=crop&w=500&q=80" },
-    { id: 3, name: "Selvedge Denim Jeans", price: 89, oldPrice: 120, rating: 4, discount: 26, img: "https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=500&q=80" },
-    { id: 4, name: "Leather Crossbody Bag", price: 220, oldPrice: 275, rating: 4.5, discount: 20, img: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=500&q=80" },
-  ];
+  const arrivals = products.filter((p) => [1, 2, 3, 4].includes(p.id));
+  const trending = products.filter((p) => [103, 203, 108, 207].includes(p.id));
+
+  const handleQuickAdd = (e, product) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addToCart(product, 1, product.sizes?.[0]);
+  };
 
   const features = [
     { icon: <FaTruck />, title: "Free Shipping", desc: "On all orders over $75" },
@@ -99,27 +99,27 @@ const Home = () => {
 
       {/* 3. CATEGORY TILES */}
       <section className="category-grid-section">
-        <div className="cat-card">
+        <Link to="/men" className="cat-card">
           <img src="https://images.unsplash.com/photo-1488161628813-04466f872be2?auto=format&fit=crop&w=600&q=80" alt="Men" />
           <div className="cat-info">
             <h3>Menswear</h3>
-            <button className="text-link">Explore</button>
+            <span className="text-link">Explore</span>
           </div>
-        </div>
-        <div className="cat-card">
+        </Link>
+        <Link to="/women" className="cat-card">
           <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=600&q=80" alt="Women" />
           <div className="cat-info">
             <h3>Womenswear</h3>
-            <button className="text-link">Explore</button>
+            <span className="text-link">Explore</span>
           </div>
-        </div>
-        <div className="cat-card">
-          <img src="https://images.unsplash.com/photo-1560243563-062bfc001d68?auto=format&fit=crop&w=600&q=80" alt="Accessories" />
+        </Link>
+        <Link to="/kids" className="cat-card">
+          <img src="https://images.unsplash.com/photo-1560243563-062bfc001d68?auto=format&fit=crop&w=600&q=80" alt="Kids" />
           <div className="cat-info">
-            <h3>Accessories</h3>
-            <button className="text-link">Explore</button>
+            <h3>Kids</h3>
+            <span className="text-link">Explore</span>
           </div>
-        </div>
+        </Link>
       </section>
 
       {/* 4. FLASH SALE BANNER */}
@@ -128,14 +128,14 @@ const Home = () => {
           <div className="flash-sale-content">
             <span className="pre-title">Limited Time</span>
             <h2>Men's Sale <br />Up to 40% Off</h2>
-            <button className="primary-btn">Shop Now</button>
+            <Link to="/men" className="primary-btn">Shop Now</Link>
           </div>
         </div>
         <div className="flash-sale-card women-sale">
           <div className="flash-sale-content">
             <span className="pre-title">Just Landed</span>
             <h2>Women's New <br />Collection</h2>
-            <button className="primary-btn">Shop Now</button>
+            <Link to="/women" className="primary-btn">Shop Now</Link>
           </div>
         </div>
       </section>
@@ -148,18 +148,18 @@ const Home = () => {
         </div>
         <div className="product-container">
           {arrivals.map((item) => (
-            <div key={item.id} className="product-item">
+            <Link key={item.id} to={`/product/${item.id}`} className="product-item">
               <div className="product-img-box">
                 {item.badge && <span className="product-badge new-badge">{item.badge}</span>}
                 <img src={item.img} alt={item.name} />
-                <button className="quick-shop">+ Add to Cart</button>
+                <button className="quick-shop" onClick={(e) => handleQuickAdd(e, item)}>+ Add to Cart</button>
               </div>
               <div className="product-details">
                 <h4>{item.name}</h4>
                 <div className="product-rating">{renderStars(item.rating)}</div>
                 <span className="product-price">${item.price}</span>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
@@ -172,11 +172,13 @@ const Home = () => {
         </div>
         <div className="product-container">
           {trending.map((item) => (
-            <div key={item.id} className="product-item">
+            <Link key={item.id} to={`/product/${item.id}`} className="product-item">
               <div className="product-img-box">
-                <span className="product-badge sale-badge">-{item.discount}%</span>
+                <span className="product-badge sale-badge">
+                  -{Math.round(((item.oldPrice - item.price) / item.oldPrice) * 100)}%
+                </span>
                 <img src={item.img} alt={item.name} />
-                <button className="quick-shop">+ Add to Cart</button>
+                <button className="quick-shop" onClick={(e) => handleQuickAdd(e, item)}>+ Add to Cart</button>
               </div>
               <div className="product-details">
                 <h4>{item.name}</h4>
@@ -186,7 +188,7 @@ const Home = () => {
                   <span className="old-price">${item.oldPrice}</span>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>

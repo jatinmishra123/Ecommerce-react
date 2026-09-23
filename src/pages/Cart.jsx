@@ -1,47 +1,15 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaTrash, FaMinus, FaPlus, FaShoppingBag, FaLock, FaTag } from "react-icons/fa";
+import { useCart } from "../context/useCart";
 import "./Cart.css";
-
-const initialCart = [
-  {
-    id: 1,
-    name: "Tailored Wool Coat",
-    size: "M",
-    color: "Charcoal",
-    price: 180,
-    qty: 1,
-    img: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?auto=format&fit=crop&w=300&q=80",
-  },
-  {
-    id: 2,
-    name: "Selvedge Denim Jeans",
-    size: "32",
-    color: "Indigo",
-    price: 89,
-    qty: 1,
-    img: "https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=300&q=80",
-  },
-];
 
 const FREE_SHIPPING_THRESHOLD = 200;
 
 const Cart = () => {
-  const [cart, setCart] = useState(initialCart);
+  const { cart, updateQty, removeFromCart } = useCart();
   const [promoCode, setPromoCode] = useState("");
   const [promoMessage, setPromoMessage] = useState("");
-
-  const updateQty = (id, delta) => {
-    setCart((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, qty: Math.max(1, item.qty + delta) } : item
-      )
-    );
-  };
-
-  const removeItem = (id) => {
-    setCart((prev) => prev.filter((item) => item.id !== id));
-  };
 
   const applyPromo = (e) => {
     e.preventDefault();
@@ -100,24 +68,28 @@ const Cart = () => {
         {/* Cart Items */}
         <div className="cart-items">
           {cart.map((item) => (
-            <div key={item.id} className="cart-item">
-              <img src={item.img} alt={item.name} />
+            <div key={`${item.id}-${item.size}`} className="cart-item">
+              <Link to={`/product/${item.id}`}>
+                <img src={item.img} alt={item.name} />
+              </Link>
               <div className="cart-item-details">
-                <h4>{item.name}</h4>
-                <span className="variant">Size: {item.size} &bull; Color: {item.color}</span>
+                <Link to={`/product/${item.id}`} className="cart-item-name">
+                  <h4>{item.name}</h4>
+                </Link>
+                {item.size && <span className="variant">Size: {item.size}</span>}
                 <div className="qty-stepper">
-                  <button onClick={() => updateQty(item.id, -1)} aria-label="Decrease quantity">
+                  <button onClick={() => updateQty(item.id, item.size, -1)} aria-label="Decrease quantity">
                     <FaMinus />
                   </button>
                   <span>{item.qty}</span>
-                  <button onClick={() => updateQty(item.id, 1)} aria-label="Increase quantity">
+                  <button onClick={() => updateQty(item.id, item.size, 1)} aria-label="Increase quantity">
                     <FaPlus />
                   </button>
                 </div>
               </div>
               <div className="cart-item-price">
                 <span className="line-total">${(item.price * item.qty).toFixed(2)}</span>
-                <button className="remove-item-btn" onClick={() => removeItem(item.id)}>
+                <button className="remove-item-btn" onClick={() => removeFromCart(item.id, item.size)}>
                   <FaTrash /> Remove
                 </button>
               </div>

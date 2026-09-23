@@ -15,6 +15,13 @@ import {
   FaPen,
   FaGift,
   FaCalendarAlt,
+  FaCheckCircle,
+  FaTruck,
+  FaClock,
+  FaTimesCircle,
+  FaHome,
+  FaBriefcase,
+  FaShieldAlt,
 } from "react-icons/fa";
 import "./Profile.css";
 
@@ -45,6 +52,15 @@ const navItems = [
 ];
 
 const statusClass = (status) => `status-badge status-${status.toLowerCase()}`;
+
+const statusIcon = (status) => {
+  switch (status) {
+    case "Delivered": return <FaCheckCircle />;
+    case "Shipped": return <FaTruck />;
+    case "Processing": return <FaClock />;
+    default: return <FaTimesCircle />;
+  }
+};
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState("profile");
@@ -239,10 +255,14 @@ const Profile = () => {
 
         {activeTab === "orders" && (
           <>
-            <h2>My Orders</h2>
+            <div className="section-header">
+              <h2>My Orders</h2>
+              <p>Track and manage all your past purchases.</p>
+            </div>
             <div className="orders-list">
               {orders.map((order) => (
-                <div key={order.id} className="order-card">
+                <div key={order.id} className={`order-card status-border-${order.status.toLowerCase()}`}>
+                  <div className="order-icon">{statusIcon(order.status)}</div>
                   <div className="order-info">
                     <h4>{order.id}</h4>
                     <span>{order.date} &bull; {order.items} item{order.items > 1 ? "s" : ""}</span>
@@ -258,7 +278,10 @@ const Profile = () => {
 
         {activeTab === "wishlist" && (
           <>
-            <h2>My Wishlist</h2>
+            <div className="section-header">
+              <h2>My Wishlist</h2>
+              <p>Items you've saved for later.</p>
+            </div>
             {wishlist.length === 0 ? (
               <p className="empty-state">Your wishlist is empty.</p>
             ) : (
@@ -281,11 +304,15 @@ const Profile = () => {
 
         {activeTab === "addresses" && (
           <>
-            <h2>Saved Addresses</h2>
+            <div className="section-header">
+              <h2>Saved Addresses</h2>
+              <p>Manage the addresses you ship and bill to.</p>
+            </div>
             <div className="address-grid">
               {initialAddresses.map((addr) => (
                 <div key={addr.id} className="address-card">
                   <div className="address-header">
+                    <span className="address-icon">{addr.label === "Home" ? <FaHome /> : <FaBriefcase />}</span>
                     <h4>{addr.label}</h4>
                     {addr.isDefault && <span className="default-tag">Default</span>}
                   </div>
@@ -307,22 +334,37 @@ const Profile = () => {
 
         {activeTab === "password" && (
           <>
-            <h2>Change Password</h2>
-            <form className="profile-card" onSubmit={(e) => e.preventDefault()}>
-              <div className="profile-row">
-                <label>Current Password</label>
-                <input type="password" placeholder="Enter current password" />
+            <div className="section-header">
+              <h2>Change Password</h2>
+              <p>Keep your account secure with a strong password.</p>
+            </div>
+            <div className="password-layout">
+              <form className="profile-card" onSubmit={(e) => e.preventDefault()}>
+                <div className="profile-row">
+                  <label>Current Password</label>
+                  <input type="password" placeholder="Enter current password" />
+                </div>
+                <div className="profile-row">
+                  <label>New Password</label>
+                  <input type="password" placeholder="Enter new password" />
+                </div>
+                <div className="profile-row">
+                  <label>Confirm New Password</label>
+                  <input type="password" placeholder="Re-enter new password" />
+                </div>
+                <button type="submit" className="save-btn">Update Password</button>
+              </form>
+
+              <div className="security-tip-card">
+                <FaShieldAlt className="security-icon" />
+                <h4>Password tips</h4>
+                <ul>
+                  <li>Use at least 8 characters</li>
+                  <li>Mix uppercase, numbers & symbols</li>
+                  <li>Avoid reusing old passwords</li>
+                </ul>
               </div>
-              <div className="profile-row">
-                <label>New Password</label>
-                <input type="password" placeholder="Enter new password" />
-              </div>
-              <div className="profile-row">
-                <label>Confirm New Password</label>
-                <input type="password" placeholder="Re-enter new password" />
-              </div>
-              <button type="submit" className="save-btn">Update Password</button>
-            </form>
+            </div>
           </>
         )}
       </div>

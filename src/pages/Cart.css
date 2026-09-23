@@ -90,6 +90,15 @@
   flex: 1;
 }
 
+.cart-item-name {
+  text-decoration: none;
+  color: inherit;
+}
+
+.cart-item-name:hover h4 {
+  color: #611580;
+}
+
 .cart-item-details h4 {
   font-size: 16px;
   margin-bottom: 6px;
