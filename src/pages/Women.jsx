@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaStar, FaStarHalfAlt, FaRegStar, FaFilter, FaTimes, FaHeart } from "react-icons/fa";
-import { products } from "../data/products";
+import { getProducts } from "../api";
 import { useCart } from "../context/useCart";
 import "./Women.css";
 
 const renderStars = (rating) => {
+  if (!rating) return null;
   const stars = [];
   for (let i = 1; i <= 5; i++) {
     if (rating >= i) stars.push(<FaStar key={i} />);
@@ -15,12 +16,17 @@ const renderStars = (rating) => {
   return stars;
 };
 
-const womenProducts = products.filter((p) => p.category === "women");
-
 const Women = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [wishlist, setWishlist] = useState([]);
+  const [womenProducts, setWomenProducts] = useState([]);
   const { addToCart } = useCart();
+
+  useEffect(() => {
+    getProducts()
+      .then((all) => setWomenProducts(all.filter((p) => p.category === "women")))
+      .catch((err) => console.error("Failed to load products:", err));
+  }, []);
 
   const toggleWishlist = (e, id) => {
     e.preventDefault();

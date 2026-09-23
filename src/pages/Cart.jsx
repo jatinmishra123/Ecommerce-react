@@ -1,15 +1,22 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaTrash, FaMinus, FaPlus, FaShoppingBag, FaLock, FaTag } from "react-icons/fa";
 import { useCart } from "../context/useCart";
+import { placeOrder } from "../api";
 import "./Cart.css";
 
 const FREE_SHIPPING_THRESHOLD = 200;
 
 const Cart = () => {
-  const { cart, updateQty, removeFromCart } = useCart();
+  const { cart, updateQty, removeFromCart, clearCart } = useCart();
+  const navigate = useNavigate();
   const [promoCode, setPromoCode] = useState("");
   const [promoMessage, setPromoMessage] = useState("");
+  const [checkingOut, setCheckingOut] = useState(false);
+  const [checkoutError, setCheckoutError] = useState("");
+  const [showCheckoutForm, setShowCheckoutForm] = useState(false);
+  const [customerName, setCustomerName] = useState("");
+  const [customerEmail, setCustomerEmail] = useState("");
 
   const applyPromo = (e) => {
     e.preventDefault();
@@ -19,6 +26,33 @@ const Cart = () => {
         ? "Promo code applied! 20% off will reflect at checkout."
         : "Invalid promo code."
     );
+  };
+
+  const handlePlaceOrder = async (e) => {
+    e.preventDefault();
+    setCheckingOut(true);
+    setCheckoutError("");
+
+    try {
+      await placeOrder({
+        customerName,
+        customerEmail,
+        amount: total,
+        status: "pending",
+        items: cart.map((item) => ({
+          productId: item.id,
+          name: item.name,
+          price: item.price,
+          quantity: item.qty
+        }))
+      });
+      clearCart();
+      navigate("/", { state: { orderPlaced: true } });
+    } catch (err) {
+      setCheckoutError(err.message || "Failed to place order. Please try again.");
+    } finally {
+      setCheckingOut(false);
+    }
   };
 
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
@@ -130,7 +164,33 @@ const Cart = () => {
             <span>${total.toFixed(2)}</span>
           </div>
 
-          <button className="checkout-btn">Proceed to Checkout</button>
+          {!showCheckoutForm ? (
+            <button className="checkout-btn" onClick={() => setShowCheckoutForm(true)}>
+              Proceed to Checkout
+            </button>
+          ) : (
+            <form className="promo-form" style={{ flexDirection: "column", alignItems: "stretch", gap: "0.5rem" }} onSubmit={handlePlaceOrder}>
+              <input
+                type="text"
+                placeholder="Your name"
+                value={customerName}
+                onChange={(e) => setCustomerName(e.target.value)}
+                required
+              />
+              <input
+                type="email"
+                placeholder="Your email"
+                value={customerEmail}
+                onChange={(e) => setCustomerEmail(e.target.value)}
+                required
+              />
+              <button type="submit" className="checkout-btn" disabled={checkingOut}>
+                {checkingOut ? "Placing order..." : `Place Order - $${total.toFixed(2)}`}
+              </button>
+            </form>
+          )}
+          {checkoutError && <p className="promo-message">{checkoutError}</p>}
+
           <p className="secure-note"><FaLock /> Secure checkout &bull; Easy 30-day returns</p>
 
           <Link to="/" className="continue-link">Continue Shopping</Link>

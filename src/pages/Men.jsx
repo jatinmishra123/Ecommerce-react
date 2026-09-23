@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaStar, FaStarHalfAlt, FaRegStar, FaFilter, FaTimes } from "react-icons/fa";
-import { products } from "../data/products";
+import { getProducts } from "../api";
 import { useCart } from "../context/useCart";
 import "./Men.css";
 
 const renderStars = (rating) => {
+  if (!rating) return null;
   const stars = [];
   for (let i = 1; i <= 5; i++) {
     if (rating >= i) stars.push(<FaStar key={i} />);
@@ -15,11 +16,16 @@ const renderStars = (rating) => {
   return stars;
 };
 
-const menProducts = products.filter((p) => p.category === "men");
-
 const Men = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [menProducts, setMenProducts] = useState([]);
   const { addToCart } = useCart();
+
+  useEffect(() => {
+    getProducts()
+      .then((all) => setMenProducts(all.filter((p) => p.category === "men")))
+      .catch((err) => console.error("Failed to load products:", err));
+  }, []);
 
   const handleQuickAdd = (e, product) => {
     e.preventDefault();

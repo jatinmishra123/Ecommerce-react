@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import {
   FaStar,
@@ -13,11 +13,12 @@ import {
   FaShieldAlt,
   FaCheckCircle,
 } from "react-icons/fa";
-import { getProductById } from "../data/products";
+import { getProductById } from "../api";
 import { useCart } from "../context/useCart";
 import "./ProductDetail.css";
 
 const renderStars = (rating) => {
+  if (!rating) return null;
   const stars = [];
   for (let i = 1; i <= 5; i++) {
     if (rating >= i) stars.push(<FaStar key={i} />);
@@ -57,12 +58,27 @@ const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addToCart } = useCart();
-  const product = getProductById(id);
 
-  const [selectedSize, setSelectedSize] = useState(product?.sizes?.[0] ?? null);
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [selectedSize, setSelectedSize] = useState(null);
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
   const [activeTab, setActiveTab] = useState("description");
+
+  useEffect(() => {
+    getProductById(id)
+      .then((found) => {
+        setProduct(found);
+        setSelectedSize(found?.sizes?.[0] ?? null);
+      })
+      .catch((err) => console.error("Failed to load product:", err))
+      .finally(() => setLoading(false));
+  }, [id]);
+
+  if (loading) {
+    return <div className="product-detail-page not-found"><h2>Loading...</h2></div>;
+  }
 
   if (!product) {
     return (
@@ -111,10 +127,12 @@ const ProductDetail = () => {
         <div className="product-info-panel">
           <h1>{product.name}</h1>
 
-          <div className="pd-rating">
-            <span className="pd-stars">{renderStars(product.rating)}</span>
-            <span className="pd-rating-value">({product.rating})</span>
-          </div>
+          {product.rating && (
+            <div className="pd-rating">
+              <span className="pd-stars">{renderStars(product.rating)}</span>
+              <span className="pd-rating-value">({product.rating})</span>
+            </div>
+          )}
 
           <div className="pd-price-row">
             <span className="pd-price">${product.price}</span>

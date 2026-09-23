@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import {
   FaTruck,
   FaUndo,
@@ -10,12 +10,14 @@ import {
   FaRegStar,
   FaQuoteLeft,
   FaFire,
+  FaCheckCircle,
 } from "react-icons/fa";
-import { products } from "../data/products";
+import { getProducts, getTestimonials } from "../api";
 import { useCart } from "../context/useCart";
 import "./Home.css";
 
 const renderStars = (rating) => {
+  if (!rating) return null;
   const stars = [];
   for (let i = 1; i <= 5; i++) {
     if (rating >= i) stars.push(<FaStar key={i} />);
@@ -27,9 +29,28 @@ const renderStars = (rating) => {
 
 const Home = () => {
   const { addToCart } = useCart();
+  const location = useLocation();
+  const [products, setProducts] = useState([]);
+  const [testimonials, setTestimonials] = useState([]);
+  const [showOrderSuccess, setShowOrderSuccess] = useState(!!location.state?.orderPlaced);
 
-  const arrivals = products.filter((p) => [1, 2, 3, 4].includes(p.id));
-  const trending = products.filter((p) => [103, 203, 108, 207].includes(p.id));
+  useEffect(() => {
+    Promise.all([getProducts(), getTestimonials()])
+      .then(([productsData, testimonialsData]) => {
+        setProducts(productsData);
+        setTestimonials(testimonialsData);
+      })
+      .catch((err) => console.error("Failed to load home data:", err));
+  }, []);
+
+  useEffect(() => {
+    if (!showOrderSuccess) return;
+    const timer = setTimeout(() => setShowOrderSuccess(false), 5000);
+    return () => clearTimeout(timer);
+  }, [showOrderSuccess]);
+
+  const arrivals = products.slice(0, 4);
+  const trending = products.slice(4, 8);
 
   const handleQuickAdd = (e, product) => {
     e.preventDefault();
@@ -44,14 +65,14 @@ const Home = () => {
     { icon: <FaHeadset />, title: "24/7 Support", desc: "Dedicated customer care" },
   ];
 
-  const testimonials = [
-    { id: 1, name: "Ananya Kapoor", role: "Verified Buyer", rating: 5, text: "The quality is outstanding for the price. My wool coat still looks brand new after months of wear." },
-    { id: 2, name: "Rohan Mehta", role: "Verified Buyer", rating: 4.5, text: "Fast delivery and the fit is exactly as described. ClothStore is now my go-to for everyday wear." },
-    { id: 3, name: "Sara Iqbal", role: "Verified Buyer", rating: 5, text: "Loved the packaging and the customer support helped me exchange a size within minutes." },
-  ];
-
   return (
     <div className="home-container">
+      {showOrderSuccess && (
+        <div className="promo-bar" style={{ background: "#16a34a", color: "#fff" }}>
+          <p><FaCheckCircle /> &nbsp;Order placed successfully! We'll email you a confirmation shortly.</p>
+        </div>
+      )}
+
       {/* PROMO BAR */}
       <div className="promo-bar">
         <p>Free shipping on orders over $75 &nbsp;|&nbsp; Extra 20% off with code <strong>SEASON20</strong></p>
@@ -175,7 +196,7 @@ const Home = () => {
             <Link key={item.id} to={`/product/${item.id}`} className="product-item">
               <div className="product-img-box">
                 <span className="product-badge sale-badge">
-                  -{Math.round(((item.oldPrice - item.price) / item.oldPrice) * 100)}%
+                  <FaFire /> Trending
                 </span>
                 <img src={item.img} alt={item.name} />
                 <button className="quick-shop" onClick={(e) => handleQuickAdd(e, item)}>+ Add to Cart</button>
@@ -183,10 +204,7 @@ const Home = () => {
               <div className="product-details">
                 <h4>{item.name}</h4>
                 <div className="product-rating">{renderStars(item.rating)}</div>
-                <div className="price-row">
-                  <span className="product-price">${item.price}</span>
-                  <span className="old-price">${item.oldPrice}</span>
-                </div>
+                <span className="product-price">${item.price}</span>
               </div>
             </Link>
           ))}

@@ -32,13 +32,15 @@ export const CartProvider = ({ children }) => {
     );
   };
 
+  const clearCart = () => setCart([]);
+
   const totalItems = useMemo(() => cart.reduce((sum, item) => sum + item.qty, 0), [cart]);
   const subtotal = useMemo(
     () => cart.reduce((sum, item) => sum + item.price * item.qty, 0),
     [cart]
   );
 
-  const value = { cart, addToCart, removeFromCart, updateQty, totalItems, subtotal };
+  const value = { cart, addToCart, removeFromCart, updateQty, clearCart, totalItems, subtotal };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };
