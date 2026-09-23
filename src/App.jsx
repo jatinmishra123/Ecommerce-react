@@ -9,6 +9,8 @@ import { Routes, Route } from "react-router-dom";
 import Profile from "./pages/Profile";
 import Cart from "./pages/Cart.jsx";
 import ProductDetail from "./pages/ProductDetail.jsx";
+import Login from "./pages/Login.jsx";
+import Register from "./pages/Register.jsx";
 
 
 function App() {
@@ -23,7 +25,9 @@ function App() {
           <Route path="/men" element={<Men />} />
           <Route path="/women" element={<Women />} />
           <Route path="/kids" element={<Kids />} />
-<Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/product/:id" element={<ProductDetail />} />
 

@@ -74,3 +74,56 @@ export function imageUrl(path) {
   if (path.startsWith("http")) return path;
   return API_URL + path;
 }
+
+// ================= CUSTOMER ACCOUNT (separate from admin login) =================
+
+export function registerCustomer({ name, email, password }) {
+  return request("/api/customer/register", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name, email, password })
+  });
+}
+
+export async function loginCustomer({ email, password }) {
+  const response = await fetch(API_URL + "/api/customer/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password })
+  });
+  const result = await response.json();
+
+  if (!response.ok || !result.success) {
+    throw new Error(result.message || "Login failed.");
+  }
+
+  return result.token;
+}
+
+function authHeaders(token) {
+  return { Authorization: "Bearer " + token, "Content-Type": "application/json" };
+}
+
+export function getCustomerProfile(token) {
+  return request("/api/customer/profile", { headers: authHeaders(token) });
+}
+
+export function updateCustomerProfile(token, { name, mobile, gender }) {
+  return request("/api/customer/profile", {
+    method: "PUT",
+    headers: authHeaders(token),
+    body: JSON.stringify({ name, mobile, gender })
+  });
+}
+
+export function changeCustomerPassword(token, { currentPassword, newPassword }) {
+  return request("/api/customer/password", {
+    method: "PUT",
+    headers: authHeaders(token),
+    body: JSON.stringify({ currentPassword, newPassword })
+  });
+}
+
+export function getCustomerOrders(token) {
+  return request("/api/customer/orders", { headers: authHeaders(token) });
+}
